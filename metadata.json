@@ -1,0 +1,6 @@
+{
+  "name": "Grupo GF Marketplace",
+  "description": "Plataforma de marketplace e painel de parceiros para o Grupo GF.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
