@@ -1,5 +1,4 @@
 // @ts-nocheck
-import { createFileRoute } from "@tanstack/react-router";
 
 /**
  * Webhook PIX para depósitos da Carteira GF.

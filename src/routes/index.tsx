@@ -42,17 +42,9 @@ import bannerParceiro from "@/assets/banner-parceiro-grupo-gf.png.asset.json";
 import bannerBoasVindas from "@/assets/banner-boas-vindas-grupo-gf.png.asset.json";
 
 
-export const Route = export default function Component() {
-  head: () => ({
-    meta: [
-      { title: "GRUPO GF REDE VAREJISTA" },
-      { name: "description", content: "Aplicativo oficial do Grupo GF: ofertas, categorias e compras pelo WhatsApp." },
-      { property: "og:title", content: "GRUPO GF REDE VAREJISTA" },
-      { property: "og:description", content: "Aplicativo oficial do Grupo GF: ofertas, categorias e compras pelo WhatsApp." },
-    ],
-  }),
-   
-}
+export default function Component() {
+  // ... (rest of the component body - I need to make sure I don't delete everything)
+
 
 /* ---------- Types & Storage ---------- */
 type Product = {

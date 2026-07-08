@@ -1,5 +1,4 @@
 // @ts-nocheck
-import { createFileRoute } from "@tanstack/react-router";
 
 /**
  * Mercado Pago webhook — configure no painel MP:
