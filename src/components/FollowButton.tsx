@@ -1,4 +1,3 @@
-import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Heart, HeartOff } from "lucide-react";
 import { useEffect, useState } from "react";

@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { Banknote, Link2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/parceiro/asaas")({

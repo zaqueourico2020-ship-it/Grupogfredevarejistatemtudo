@@ -1,6 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { registerPartner } from "@/lib/partners.functions";
 import { Store, Upload, ArrowLeft, CheckCircle2 } from "lucide-react";
 
@@ -139,7 +137,7 @@ function SejaParceiro() {
             Seu cadastro está em análise. Você será notificado por e-mail assim que for aprovado pela equipe Grupo GF.
           </p>
           <button
-            onClick={() => navigate({ to: "/" })}
+            onClick={() => navigate("/")}
             className="w-full py-3 rounded-lg font-semibold text-white"
             style={{ background: "linear-gradient(135deg,#0a4fe3,#ff6a00)" }}
           >

@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { ShieldCheck, CreditCard, Headphones, RotateCcw, ChevronRight } from "lucide-react";
 
 /** Selo compacto exibido nos cards de produto */

@@ -1,4 +1,3 @@
-import { createFileRoute, Outlet, Link, useNavigate, redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Package, LogOut, Store, ExternalLink, LayoutDashboard, ShoppingBag,

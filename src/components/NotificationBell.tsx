@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { Bell } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { Link } from "@tanstack/react-router";
 
 type Notif = {
   id: string;

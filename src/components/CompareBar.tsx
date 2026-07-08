@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { useCompareList } from "@/hooks/useCompareList";
 import { GitCompareArrows, X } from "lucide-react";
 

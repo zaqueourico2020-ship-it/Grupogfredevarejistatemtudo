@@ -1,26 +1,16 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { Store, User as UserIcon, Mail, Phone, Lock, IdCard, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import logo from "@/assets/gf-shield-logo.png";
-
-export const Route = createFileRoute("/auth")({
-  head: () => ({
-    meta: [
-      { title: "Entrar — Grupo GF" },
-      { name: "description", content: "Crie sua conta no Grupo GF como lojista ou pessoa física." },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
-  component: AuthPage,
-});
+import { useNavigate, Link } from "react-router-dom";
 
 type Audience = "lojista" | "pessoa_fisica";
 type Mode = "signin" | "signup" | "forgot";
 
-function AuthPage() {
+export default function AuthPage() {
   const navigate = useNavigate();
+  // ... (rest of the component)
   const initialAudience: Audience =
     typeof window !== "undefined" && new URLSearchParams(window.location.search).get("tipo") === "lojista"
       ? "lojista"

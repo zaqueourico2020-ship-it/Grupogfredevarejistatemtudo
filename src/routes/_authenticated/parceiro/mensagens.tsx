@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { SellerChat } from "@/components/SellerChat";
 
 export const Route = createFileRoute("/_authenticated/parceiro/mensagens")({

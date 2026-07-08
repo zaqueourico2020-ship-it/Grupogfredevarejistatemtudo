@@ -1,5 +1,3 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { Heart, BadgeCheck, Store as StoreIcon } from "lucide-react";
 import { listFollowedStores } from "@/lib/followers.functions";

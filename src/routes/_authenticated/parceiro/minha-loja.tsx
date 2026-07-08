@@ -1,5 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getMyPartner } from "@/lib/partners.functions";
 import { updatePartnerStore } from "@/lib/partner-panel.functions";

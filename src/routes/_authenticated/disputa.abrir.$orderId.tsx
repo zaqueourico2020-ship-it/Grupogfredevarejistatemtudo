@@ -1,4 +1,3 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Shield, Send } from "lucide-react";
@@ -65,7 +64,7 @@ function OpenDisputePage() {
           message: description, attachments: urls,
         });
       }
-      navigate({ to: "/" });
+      navigate("/");
     } catch (e: any) {
       setErr(e.message ?? "Erro ao abrir disputa.");
     } finally { setSending(false); }

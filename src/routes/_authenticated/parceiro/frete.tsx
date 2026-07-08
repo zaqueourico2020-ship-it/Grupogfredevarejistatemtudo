@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { Truck } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/parceiro/frete")({

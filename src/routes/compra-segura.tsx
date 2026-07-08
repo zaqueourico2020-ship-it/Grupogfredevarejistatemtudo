@@ -1,4 +1,3 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
 import { ShieldCheck, CreditCard, Headphones, RotateCcw, ArrowLeft, CheckCircle2, AlertTriangle, Clock } from "lucide-react";
 import logo from "@/assets/grupo-gf-logo.png";
 

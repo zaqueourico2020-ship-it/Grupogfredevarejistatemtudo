@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import { MessageCircle, RefreshCw } from "lucide-react";
-import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { listSellerConversations } from "@/lib/chat.functions";
 import { ChatThread } from "@/components/ChatWidget";

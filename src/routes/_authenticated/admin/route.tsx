@@ -1,4 +1,3 @@
-import { createFileRoute, Outlet, Link, useNavigate, redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard, ShoppingCart, Package, FileText, ClipboardList, LogOut, Image as ImageIcon, Store, Percent, MessageCircle, Wallet, ShieldAlert, ScrollText, Banknote, FileBarChart, Shield } from "lucide-react";
 import { NotificationBell } from "@/components/NotificationBell";

@@ -1,7 +1,7 @@
-// @ts-nocheck
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate, Link } from "react-router-dom";
+// ... (rest of imports)
 
 const OWNER_EMAIL = "grupogfredevarejistaoficial@gmail.com";
 
@@ -20,7 +20,6 @@ import {
   Coins, Ticket, RotateCcw, History, ClipboardCheck,
   Wrench, Handshake, Percent, Apple, ShoppingBag
 } from "lucide-react";
-import { useServerFn } from "@tanstack/react-start";
 import logo from "@/assets/gf-shield-logo.png";
 import { createCheckout } from "@/lib/checkout.functions";
 import { getWallet } from "@/lib/wallet.functions";
@@ -43,7 +42,7 @@ import bannerParceiro from "@/assets/banner-parceiro-grupo-gf.png.asset.json";
 import bannerBoasVindas from "@/assets/banner-boas-vindas-grupo-gf.png.asset.json";
 
 
-export const Route = createFileRoute("/")({
+export const Route = export default function Component() {
   head: () => ({
     meta: [
       { title: "GRUPO GF REDE VAREJISTA" },
@@ -52,8 +51,8 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Aplicativo oficial do Grupo GF: ofertas, categorias e compras pelo WhatsApp." },
     ],
   }),
-  component: App,
-});
+   
+}
 
 /* ---------- Types & Storage ---------- */
 type Product = {
@@ -198,7 +197,7 @@ const ALL_CATEGORIES = ALL_CATEGORIES_EXT;
 
 
 /* ---------- Helpers ---------- */
-const brl = (n: number) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const brl = (n: number) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }
 const uid = () => Math.random().toString(36).slice(2, 10);
 const fallbackProductImage = logo;
 
@@ -452,7 +451,7 @@ function fileToDataUrl(file: File): Promise<string> {
     r.onload = () => resolve(r.result as string);
     r.onerror = reject;
     r.readAsDataURL(file);
-  });
+  }
 }
 
 /* ---------- App ---------- */
@@ -500,7 +499,7 @@ function App() {
           console.error("Fallback catch error:", e2);
         }
         if (cachedFeaturedPartners.length) setPartners(cachedFeaturedPartners);
-      });
+      }
     return () => { cancelled = true; };
   }, [fn]);
 
@@ -512,7 +511,7 @@ function App() {
     banners: seedBanners,
     coupons: seedCoupons,
     settings: DEFAULT_SETTINGS,
-  });
+  }
   const legacyProducts = storeState.products as Product[];
   const [dbProducts, setDbProducts] = useState<Product[]>(() => cachedDbProducts);
   useEffect(() => {
@@ -522,13 +521,13 @@ function App() {
         .from("products")
         .select("id,name,price,discount_price,image_url,images,stock_quantity,category,subcategory,active,description,notes,product_variants:product_variants!product_variants_product_id_fkey(id,name,price,discount_price,stock,image_url,attributes)")
         .eq("active", true)
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false }
       const partnerRes = await (supabase as any)
         .from("partner_products")
         .select("id,name,price,discount_price,image_url,images,stock_quantity,category,subcategory,active,description,notes,approval_status,partner_id,product_variants:product_variants!product_variants_partner_product_id_fkey(id,name,price,discount_price,stock,image_url,attributes)")
         .eq("active", true)
         .eq("approval_status", "approved")
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false }
       if (adminRes.error) console.error("[home products]", adminRes.error.message);
       if (partnerRes.error) console.error("[home partner_products]", partnerRes.error.message);
       if (cancelled) return;
@@ -563,7 +562,7 @@ function App() {
         ...mapAdmin(p),
         sellerName: "Loja parceira",
         partnerId: p.partner_id || null,
-      });
+      }
       const merged: Product[] = [];
       if (!adminRes.error && adminRes.data) merged.push(...adminRes.data.map(mapAdmin));
       if (!partnerRes.error && partnerRes.data) merged.push(...partnerRes.data.map(mapPartner));
@@ -600,12 +599,12 @@ function App() {
           byId.set(banner.id, {
             ...banner,
             image: resolveImageUrl(hasValidImage ? banner.image : seed.image)
-          });
+          }
         } else {
           byId.set(banner.id, {
             ...banner,
             image: resolveImageUrl(banner.image)
-          });
+          }
         }
       }
     }
@@ -615,19 +614,19 @@ function App() {
   const settings = { ...DEFAULT_SETTINGS, ...(storeState.settings as Partial<StoreSettings>) };
   const setProducts = (next: Product[] | ((prev: Product[]) => Product[])) => {
     const v = typeof next === "function" ? (next as any)(products) : next;
-    mutateStore({ products: v });
+    mutateStore({ products: v }
   };
   const setBanners = (next: Banner[] | ((prev: Banner[]) => Banner[])) => {
     const v = typeof next === "function" ? (next as any)(banners) : next;
-    mutateStore({ banners: v });
+    mutateStore({ banners: v }
   };
   const setCoupons = (next: Coupon[] | ((prev: Coupon[]) => Coupon[])) => {
     const v = typeof next === "function" ? (next as any)(coupons) : next;
-    mutateStore({ coupons: v });
+    mutateStore({ coupons: v }
   };
   const setSettings = (next: StoreSettings | ((prev: StoreSettings) => StoreSettings)) => {
     const v = typeof next === "function" ? (next as any)(settings) : next;
-    mutateStore({ settings: v });
+    mutateStore({ settings: v }
   };
 
   const [cart, setCart] = useState<CartItem[]>(() => cachedCart ?? []);
@@ -652,7 +651,7 @@ function App() {
   const fetchMyOrders = useServerFn(listMyOrders);
   const [remoteOrders, setRemoteOrders] = useState<any[]>([]);
   const [notifs, setNotifs] = useState<any[]>([]);
-  const [cashback, setCashback] = useState<{ available: number; totalEarned: number; totalUsed: number; totalExpired: number; credits: any[] }>({ available: 0, totalEarned: 0, totalUsed: 0, totalExpired: 0, credits: [] });
+  const [cashback, setCashback] = useState<{ available: number; totalEarned: number; totalUsed: number; totalExpired: number; credits: any[] }>({ available: 0, totalEarned: 0, totalUsed: 0, totalExpired: 0, credits: [] }
   const [useCashbackAmount, setUseCashbackAmount] = useState<number>(0);
   const [toast, setToast] = useState<string | null>(null);
   const [addressesList, setAddressesList] = useState<Address[]>(() => load<Address[]>(LS.addresses, []));
@@ -693,7 +692,7 @@ function App() {
     setIsOwner(false);
     setIsPartner(false);
     setTab("home");
-    navigate({ to: "/auth", replace: true });
+    navigate({ to: "/auth", replace: true }
   }, [navigate]);
   useEffect(() => {
     const check = async () => {
@@ -732,13 +731,13 @@ function App() {
     const { data } = await supabase.auth.getUser();
     if (!data.user) {
       setDrawerOpen(false);
-      navigate({ to: "/auth" });
+      navigate("/auth");
       return;
     }
     if (partnerActivating) return;
     setPartnerActivating(true);
     try {
-      const result = await activatePartner({});
+      const result = await activatePartner({}
       if (result && "ok" in result && !result.ok) {
         throw new Error((result as any).error || "Não foi possível ativar Parceiro GF agora.");
       }
@@ -762,12 +761,12 @@ function App() {
     recipientName: "", recipientPhone: "",
     zip: "", street: "", number: "", complement: "",
     neighborhood: "", city: "", state: "", reference: "", notes: "",
-  });
+  }
 
   const refreshNotifs = useCallback(async () => {
     if (!userId) return;
     try {
-      const r = await fetchNotifications({});
+      const r = await fetchNotifications({}
       setNotifs(r.notifications);
     } catch (e) { console.error(e); }
   }, [userId, fetchNotifications]);
@@ -775,7 +774,7 @@ function App() {
   const refreshCashback = useCallback(async () => {
     if (!userId) return;
     try {
-      const r = await fetchCashback({});
+      const r = await fetchCashback({}
       setCashback(r);
     } catch (e) { console.error(e); }
   }, [userId, fetchCashback]);
@@ -783,7 +782,7 @@ function App() {
   const refreshMyOrders = useCallback(async () => {
     if (!userId) { setRemoteOrders([]); return; }
     try {
-      const r = await fetchMyOrders({});
+      const r = await fetchMyOrders({}
       setRemoteOrders(r.orders ?? []);
     } catch (e) { console.error(e); }
   }, [userId, fetchMyOrders]);
@@ -816,7 +815,7 @@ function App() {
         pin: "",
         avatar: meta.avatar || localUser?.avatar || "",
         favorites: localUser?.favorites ?? [],
-      });
+      }
     };
 
     let mounted = true;
@@ -842,7 +841,7 @@ function App() {
     const { data: sub } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
       applyAuthUser(session?.user ?? null);
       setReady(true);
-    });
+    }
     return () => {
       mounted = false;
       sub.subscription.unsubscribe();
@@ -871,7 +870,7 @@ function App() {
       setCart([]); setAppliedCoupon(null); setCouponInput(""); setUseCashbackAmount(0);
       setTab("orders");
       window.history.replaceState({}, "", window.location.pathname);
-      const tryRefresh = () => { fetchNotifications({}).then(r => setNotifs(r.notifications)).catch(() => {}); fetchCashback({}).then(r => setCashback(r)).catch(() => {}); fetchMyOrders({}).then(r => setRemoteOrders(r.orders ?? [])).catch(() => {}); };
+      const tryRefresh = () => { fetchNotifications({}).then(r => setNotifs(r.notifications)).catch(() => {} fetchCashback({}).then(r => setCashback(r)).catch(() => {} fetchMyOrders({}).then(r => setRemoteOrders(r.orders ?? [])).catch(() => {} };
       setTimeout(tryRefresh, 2500);
       setTimeout(tryRefresh, 8000);
 
@@ -914,7 +913,7 @@ function App() {
           nextBannersMap.set(b.id, b);
         }
       }
-      mutateStore({ banners: Array.from(nextBannersMap.values()) });
+      mutateStore({ banners: Array.from(nextBannersMap.values()) }
     }
   }, [ready, storeState.banners, mutateStore]);
 
@@ -959,7 +958,7 @@ function App() {
       }
       
       return true;
-    });
+    }
     const sorted = [...arr];
     if (sortBy === "price-asc") sorted.sort((a, b) => a.price - b.price);
     else if (sortBy === "price-desc") sorted.sort((a, b) => b.price - a.price);
@@ -968,7 +967,7 @@ function App() {
       const da = a.oldPrice ? (1 - a.price / a.oldPrice) : 0;
       const db = b.oldPrice ? (1 - b.price / b.oldPrice) : 0;
       return db - da;
-    });
+    }
     return sorted;
   }, [products, activeCategory, search, sortBy, maxPrice, filterEstado, filterCidade, filterRegiao, filterBairro]);
 
@@ -997,7 +996,7 @@ function App() {
       const ex = c.find(i => i.productId === id);
       if (ex) return c.map(i => i.productId === id ? { ...i, qty: i.qty + 1 } : i);
       return [...c, { productId: id, qty: 1 }];
-    });
+    }
     showToast("Adicionado ao carrinho");
   };
   const changeQty = (id: string, delta: number) => {
@@ -1022,7 +1021,7 @@ function App() {
     const favs = user.favorites.includes(id)
       ? user.favorites.filter(x => x !== id)
       : [...user.favorites, id];
-    setUser({ ...user, favorites: favs });
+    setUser({ ...user, favorites: favs }
   };
 
   const checkout = (method: "whatsapp" | "pickup") => {
@@ -1085,7 +1084,7 @@ function App() {
           ...delivery,
         },
 
-      });
+      }
       if (res.url) {
         setCheckoutOpen(false);
         window.location.assign(res.url);
@@ -1155,7 +1154,7 @@ function App() {
               </div>
               {!user && (
                 <button
-                  onClick={() => { setDrawerOpen(false); navigate({ to: "/auth" }); }}
+                  onClick={() => { setDrawerOpen(false); navigate("/auth"); }}
                   className="rounded-lg px-3 py-2 text-xs font-bold text-white shadow-md"
                   style={{ background: "linear-gradient(135deg,#0a4fe3,#8b5cf6)" }}
                 >
@@ -1166,7 +1165,7 @@ function App() {
 
             {/* Carteira GF */}
             <div 
-              onClick={() => { setDrawerOpen(false); navigate({ to: "/carteira" }); }}
+              onClick={() => { setDrawerOpen(false); navigate("/carteira"); }}
               className="mx-4 mb-4 rounded-xl bg-[#2968c8] p-3 ring-1 ring-cyan-500/15 cursor-pointer hover:bg-[#1E56B1] transition-colors"
             >
               <div className="mb-2 flex items-center justify-between">
@@ -1197,7 +1196,7 @@ function App() {
             {isOwner && (
               <div className="mx-4 mb-3">
                 <button
-                  onClick={() => { setDrawerOpen(false); navigate({ to: "/admin/dashboard" }); }}
+                  onClick={() => { setDrawerOpen(false); navigate("/admin/dashboard"); }}
                   className="w-full rounded-xl px-3 py-2.5 flex items-center gap-3 font-semibold text-white shadow-md"
                   style={{ background: "linear-gradient(135deg,#0a4fe3,#ff6a00)" }}
                 >
@@ -1250,7 +1249,7 @@ function App() {
             <div className="px-4 pb-2">
               {isPartner ? (
                 <button
-                  onClick={() => { setDrawerOpen(false); navigate({ to: "/parceiro" as any }); }}
+                  onClick={() => { setDrawerOpen(false); navigate({ to: "/parceiro" as any } }}
                   className="flex w-full items-center gap-3 rounded-xl bg-emerald-500/10 p-3 ring-1 ring-emerald-500/40 hover:bg-emerald-500/15"
                 >
                   <div className="grid h-10 w-10 place-items-center rounded-lg bg-emerald-500/20">
@@ -1432,7 +1431,7 @@ function App() {
                   if (user) {
                     setOpenAddressesGlobal(true);
                   } else {
-                    navigate({ to: "/auth" });
+                    navigate("/auth");
                   }
                 }}
                 title={defaultAddress ? `${defaultAddress.street}, ${defaultAddress.number} - ${defaultAddress.neighborhood}, ${defaultAddress.city}/${defaultAddress.state}` : "Selecionar endereço"}
@@ -1474,7 +1473,7 @@ function App() {
                 </button>
                 {isPartner ? (
                   <button 
-                    onClick={() => navigate({ to: "/parceiro" })} 
+                    onClick={() => navigate("/parceiro")} 
                     className="hover:text-white transition-colors text-emerald-400 font-bold flex items-center gap-1 py-1"
                   >
                     <Store size={13} /> Painel do Parceiro
@@ -1575,7 +1574,7 @@ function App() {
                 if (user) {
                   setTab("profile");
                 } else {
-                  navigate({ to: "/auth" });
+                  navigate("/auth");
                 }
               }}
               className="w-9 h-9 rounded-full overflow-hidden border border-slate-700 shrink-0 select-none active:scale-95 transition-transform bg-slate-800 flex items-center justify-center"
@@ -1653,7 +1652,7 @@ function App() {
               if (user) {
                 setOpenAddressesGlobal(true);
               } else {
-                navigate({ to: "/auth" });
+                navigate("/auth");
               }
             }}
           >
@@ -1733,7 +1732,7 @@ function App() {
                       setSearch("");
                       setTab("home");
                       setTimeout(() => {
-                        document.getElementById("vitrine")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                        document.getElementById("vitrine")?.scrollIntoView({ behavior: "smooth", block: "start" }
                       }, 100);
                     }
                   },
@@ -1743,7 +1742,7 @@ function App() {
                     icon: Wallet,
                     bgColor: "bg-amber-50 text-amber-600 border-amber-100 hover:bg-amber-100/80",
                     onClick: () => {
-                      navigate({ to: "/carteira" });
+                      navigate("/carteira");
                     }
                   },
                   {
@@ -1752,7 +1751,7 @@ function App() {
                     icon: Handshake,
                     bgColor: "bg-purple-50 text-purple-700 border-purple-100 hover:bg-purple-100/80",
                     onClick: () => {
-                      document.getElementById("lojas-parceiras")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      document.getElementById("lojas-parceiras")?.scrollIntoView({ behavior: "smooth", block: "start" }
                     }
                   }
                 ].map((item) => (
@@ -2204,7 +2203,7 @@ function App() {
           unreadNotifs={unreadNotifs}
           showToast={showToast}
           isOwner={isOwner}
-          onGoAdmin={() => navigate({ to: "/admin/dashboard" })}
+          onGoAdmin={() => navigate("/admin/dashboard")}
           onSignOut={signOutToLogin}
           onOpenAddresses={() => setOpenAddressesGlobal(true)}
         />
@@ -2219,8 +2218,8 @@ function App() {
       {tab === "notifications" && (
         <NotificationsTab
           items={notifs}
-          onMarkRead={async (id) => { try { await markNotifRead({ data: { id } }); refreshNotifs(); } catch {} }}
-          onMarkAll={async () => { try { await markNotifRead({ data: { all: true } }); refreshNotifs(); } catch {} }}
+          onMarkRead={async (id) => { try { await markNotifRead({ data: { id } } refreshNotifs(); } catch {} }}
+          onMarkAll={async () => { try { await markNotifRead({ data: { all: true } } refreshNotifs(); } catch {} }}
         />
       )}
 
@@ -2542,7 +2541,7 @@ function RegisterScreen({ onRegister }: { onRegister: (u: UserData) => void }) {
     e.preventDefault();
     if (!name || !phone || !email) { setErr("Preencha todos os campos."); return; }
     if (pin && !/^\d{4,6}$/.test(pin)) { setErr("PIN deve ter 4 a 6 dígitos."); return; }
-    onRegister({ name, phone, email, pin, favorites: [] });
+    onRegister({ name, phone, email, pin, favorites: [] }
   };
 
   return (
@@ -2728,7 +2727,7 @@ function ProductModal({ product, onClose, onAdd, isFav, onFav, user, orders, all
         .from("product_reviews")
         .select("*")
         .eq("product_id", product.id)
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false }
       if (!cancelled) {
         const rows = (((data as unknown) as Review[]) ?? []);
         const sign = async (path: string) => {
@@ -2773,7 +2772,7 @@ function ProductModal({ product, onClose, onAdd, isFav, onFav, user, orders, all
       for (const file of photoFiles) {
         const ext = file.name.split(".").pop() || "jpg";
         const path = `${uid}/${product.id}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-        const { error: upErr } = await supabase.storage.from("review-photos").upload(path, file, { upsert: false });
+        const { error: upErr } = await supabase.storage.from("review-photos").upload(path, file, { upsert: false }
         if (upErr) throw upErr;
         photoUrls.push(path);
       }
@@ -2783,7 +2782,7 @@ function ProductModal({ product, onClose, onAdd, isFav, onFav, user, orders, all
         if (file.size > 30 * 1024 * 1024) throw new Error("Vídeo muito grande (máx. 30MB).");
         const ext = file.name.split(".").pop() || "mp4";
         const path = `${uid}/${product.id}-vid-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-        const { error: upErr } = await supabase.storage.from("review-photos").upload(path, file, { upsert: false });
+        const { error: upErr } = await supabase.storage.from("review-photos").upload(path, file, { upsert: false }
         if (upErr) throw upErr;
         videoUrls.push(path);
       }
@@ -3079,7 +3078,7 @@ function WalletInline() {
         available: Number(w.available_balance ?? 0),
         pending: Number(w.pending_balance ?? 0),
         cashback: Number(w.total_cashback ?? 0),
-      });
+      }
     }).catch(() => active && setData({ available: 0, pending: 0, cashback: 0 }));
     return () => { active = false; };
   }, [fetchWallet]);
@@ -3142,7 +3141,7 @@ function WalletInline() {
             { to: "/carteira", hash: "transfer", icon: ArrowLeftRight, label: "Transferir", sub: "via PIX", bg: "bg-blue-50", color: "text-blue-600", borderColor: "border-blue-100" },
             { to: "/carteira", hash: "extrato", icon: FileText, label: "Extrato", sub: "lançamentos", bg: "bg-amber-50", color: "text-amber-600", borderColor: "border-amber-100" },
           ].map((a) => (
-            <Link key={a.label} to={a.to} hash={a.hash}
+            <Link key={a.label} to={`${a.to}#${a.hash}`}
               className="rounded-xl p-2 bg-slate-50 border border-slate-100 hover:bg-slate-100 text-center flex flex-col items-center justify-between gap-1 transition-all">
               <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${a.bg} border ${a.borderColor} mb-0.5`}>
                 <a.icon size={16} className={a.color} />
@@ -3225,7 +3224,7 @@ function ProfileTab({ user, setUser, orders, products, remoteOrders = [], onOpen
   const handlePhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file) return;
     const data = await fileToDataUrl(file);
-    setUser({ ...user, avatar: data });
+    setUser({ ...user, avatar: data }
     showToast("Foto atualizada");
   };
 
@@ -3333,7 +3332,7 @@ function ProfileTab({ user, setUser, orders, products, remoteOrders = [], onOpen
       </div>
 
       {/* Custom Promotional Banner like Shopee Gift Cards / Referrals */}
-      <div onClick={() => navigate({ to: "/indique-e-ganhe" })} className="mx-4 bg-white hover:bg-slate-50 border border-slate-100 rounded-2xl p-3 flex items-center justify-between shadow-sm cursor-pointer transition-all">
+      <div onClick={() => navigate("/indique-e-ganhe")} className="mx-4 bg-white hover:bg-slate-50 border border-slate-100 rounded-2xl p-3 flex items-center justify-between shadow-sm cursor-pointer transition-all">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center shrink-0 border border-amber-100/50">
             <Gift size={18} className="text-amber-500 animate-bounce" />
@@ -3357,7 +3356,7 @@ function ProfileTab({ user, setUser, orders, products, remoteOrders = [], onOpen
             { label: "Meus favoritos", icon: Heart, badge: favs.length, onClick: () => setOpenFavs(true), bg: "bg-rose-50", iconColor: "text-rose-500" },
             { label: "Cashback e Recompensas", icon: Gift, sub: brl(cashbackAvailable), onClick: onGoCashback, bg: "bg-emerald-50", iconColor: "text-emerald-500" },
             { label: "Visto recentemente", icon: History, onClick: onGoOrders, bg: "bg-blue-50", iconColor: "text-blue-500" },
-            { label: "Seja um Parceiro", icon: Store, onClick: () => navigate({ to: "/seja-um-parceiro" }), bg: "bg-purple-50", iconColor: "text-purple-500" },
+            { label: "Seja um Parceiro", icon: Store, onClick: () => navigate("/seja-um-parceiro"), bg: "bg-purple-50", iconColor: "text-purple-500" },
             { label: "Programa de Fidelidade", icon: Trophy, onClick: onGoFaq, bg: "bg-amber-50", iconColor: "text-amber-500" },
             { label: "Live e Vídeos", icon: Tv, onClick: onGoFaq, bg: "bg-red-50", iconColor: "text-red-500" },
           ].map((item, i) => (
@@ -3502,8 +3501,8 @@ function ProfileInfoModal({ user, setUser, onClose }: { user: UserData; setUser:
   const [form, setForm] = useState({
     name: user.name, phone: user.phone, cpf: user.cpf || "",
     birthdate: user.birthdate || "", address: user.address || "",
-  });
-  const save = () => { setUser({ ...user, ...form }); onClose(); };
+  }
+  const save = () => { setUser({ ...user, ...form } onClose(); };
   return (
     <ModalShell onClose={onClose}>
       <ModalHeader title="Informações do perfil" onClose={onClose} icon={IdCard} />
@@ -3543,38 +3542,38 @@ function SecurityModal({ user, setUser, onClose, showToast }: {
   const handlePhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file) return;
     const data = await fileToDataUrl(file);
-    setUser({ ...user, avatar: data });
+    setUser({ ...user, avatar: data }
     showToast("Foto atualizada");
   };
 
   const changePassword = async () => {
     setMsg(null);
-    if (newPassword.length < 6) return setMsg({ type: "err", text: "A senha deve ter pelo menos 6 caracteres." });
-    if (newPassword !== confirmPassword) return setMsg({ type: "err", text: "As senhas não coincidem." });
+    if (newPassword.length < 6) return setMsg({ type: "err", text: "A senha deve ter pelo menos 6 caracteres." }
+    if (newPassword !== confirmPassword) return setMsg({ type: "err", text: "As senhas não coincidem." }
     setBusy(true);
     try {
       const { supabase } = await import("@/integrations/supabase/client");
-      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      const { error } = await supabase.auth.updateUser({ password: newPassword }
       if (error) throw error;
-      setMsg({ type: "ok", text: "Senha alterada com sucesso!" });
+      setMsg({ type: "ok", text: "Senha alterada com sucesso!" }
       setNewPassword(""); setConfirmPassword("");
     } catch (e: any) {
-      setMsg({ type: "err", text: e?.message || "Erro ao alterar senha." });
+      setMsg({ type: "err", text: e?.message || "Erro ao alterar senha." }
     } finally { setBusy(false); }
   };
 
   const changeEmail = async () => {
     setMsg(null);
-    if (!newEmail.includes("@")) return setMsg({ type: "err", text: "E-mail inválido." });
-    if (newEmail === user.email) return setMsg({ type: "err", text: "Informe um novo e-mail." });
+    if (!newEmail.includes("@")) return setMsg({ type: "err", text: "E-mail inválido." }
+    if (newEmail === user.email) return setMsg({ type: "err", text: "Informe um novo e-mail." }
     setBusy(true);
     try {
       const { supabase } = await import("@/integrations/supabase/client");
-      const { error } = await supabase.auth.updateUser({ email: newEmail });
+      const { error } = await supabase.auth.updateUser({ email: newEmail }
       if (error) throw error;
-      setMsg({ type: "ok", text: "Solicitação de alteração de e-mail enviada." });
+      setMsg({ type: "ok", text: "Solicitação de alteração de e-mail enviada." }
     } catch (e: any) {
-      setMsg({ type: "err", text: e?.message || "Erro ao alterar e-mail." });
+      setMsg({ type: "err", text: e?.message || "Erro ao alterar e-mail." }
     } finally { setBusy(false); }
   };
 
@@ -3657,7 +3656,7 @@ function AddressesModal({ onClose, showToast, onPersist }: { onClose: () => void
     id: uid(), label: "Casa", recipient: "", phone: "", zip: "",
     street: "", number: "", complement: "", neighborhood: "", city: "", state: "",
     reference: "", isDefault: list.length === 0,
-  });
+  }
 
   const saveAddress = (a: Address) => {
     let next = list.find(x => x.id === a.id) ? list.map(x => x.id === a.id ? a : x) : [...list, a];
@@ -3964,7 +3963,7 @@ function SettingsAdmin({ settings, setSettings, showToast }: {
   settings: StoreSettings; setSettings: (s: StoreSettings) => void; showToast: (m: string) => void;
 }) {
   const [form, setForm] = useState<StoreSettings>(settings);
-  const upd = <K extends keyof StoreSettings>(k: K, v: StoreSettings[K]) => setForm({ ...form, [k]: v });
+  const upd = <K extends keyof StoreSettings>(k: K, v: StoreSettings[K]) => setForm({ ...form, [k]: v }
   const fields: { k: keyof StoreSettings; label: string; type?: string }[] = [
     { k: "storeName", label: "Nome da loja" },
     { k: "cnpj", label: "CNPJ" },
@@ -4004,7 +4003,7 @@ function ProductsAdmin({ products, setProducts, editing, setEditing, showToast }
   editing: Product | null; setEditing: (p: Product | null) => void;
   showToast: (m: string) => void;
 }) {
-  const blank = (): Product => ({ id: uid(), name: "", price: 0, category: "", image: "", stock: 0, description: "" });
+  const blank = (): Product => ({ id: uid(), name: "", price: 0, category: "", image: "", stock: 0, description: "" }
   const [form, setForm] = useState<Product>(blank());
   const [adminSearch, setAdminSearch] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
@@ -4025,7 +4024,7 @@ function ProductsAdmin({ products, setProducts, editing, setEditing, showToast }
     const f = e.target.files?.[0]; if (!f) return;
     if (f.size > 2 * 1024 * 1024) { showToast("Imagem muito grande (max 2MB)"); return; }
     const data = await fileToDataUrl(f);
-    setForm({ ...form, image: data });
+    setForm({ ...form, image: data }
   };
 
   const save = () => {
@@ -4131,13 +4130,13 @@ function ProductsAdmin({ products, setProducts, editing, setEditing, showToast }
 }
 
 function BannersAdmin({ banners, setBanners, showToast }: { banners: Banner[]; setBanners: (b: Banner[]) => void; showToast: (m: string) => void }) {
-  const [form, setForm] = useState<Banner>({ id: uid(), title: "", subtitle: "", image: "" });
+  const [form, setForm] = useState<Banner>({ id: uid(), title: "", subtitle: "", image: "" }
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0]; if (!f) return;
     if (f.size > 2 * 1024 * 1024) { showToast("Imagem muito grande"); return; }
-    setForm({ ...form, image: await fileToDataUrl(f) });
+    setForm({ ...form, image: await fileToDataUrl(f) }
   };
 
   return (
@@ -4152,7 +4151,7 @@ function BannersAdmin({ banners, setBanners, showToast }: { banners: Banner[]; s
         {form.image && <img src={form.image} alt="" className="w-full h-24 object-cover rounded-lg" />}
         <button onClick={() => {
           if (!form.title || !form.image) { showToast("Preencha tudo"); return; }
-          setBanners([form, ...banners]); setForm({ id: uid(), title: "", subtitle: "", image: "" });
+          setBanners([form, ...banners]); setForm({ id: uid(), title: "", subtitle: "", image: "" }
           showToast("Banner adicionado");
         }} className="w-full py-2.5 rounded-lg font-semibold text-white" style={{ background: "linear-gradient(135deg,#0a4fe3,#ff6a00)" }}>
           Adicionar banner
@@ -4431,7 +4430,7 @@ function CashbackAdmin({ showToast }: { showToast: (m: string) => void }) {
 
   const load = async () => {
     setLoading(true);
-    try { const r = await fetchReport({}); setReport(r as any); }
+    try { const r = await fetchReport({} setReport(r as any); }
     catch (e: any) { showToast(e?.message || "Erro ao carregar"); }
     finally { setLoading(false); }
   };
@@ -4465,7 +4464,7 @@ function CashbackAdmin({ showToast }: { showToast: (m: string) => void }) {
         <button
           onClick={async () => {
             if (!confirm(`Marcar ${brl(report.totals.expired)} de cashback expirado como transferido para a conta bancária?`)) return;
-            try { await markTransferred({}); showToast("Marcado como transferido"); load(); }
+            try { await markTransferred({} showToast("Marcado como transferido"); load(); }
             catch (e: any) { showToast(e?.message || "Erro"); }
           }}
           className="w-full py-2.5 rounded-lg bg-amber-600 text-white font-semibold text-sm"
@@ -4502,7 +4501,7 @@ function LojasParceirasStrip({ partners }: { partners: any[] }) {
       </div>
       <div className="flex gap-3 overflow-x-auto pb-2">
         {partners.map((p) => (
-          <Link key={p.id} to="/loja/$slug" params={{ slug: p.slug }} className="shrink-0 w-32 rounded-lg bg-[#2968c8] border border-cyan-500/20 overflow-hidden hover:border-cyan-400">
+          <Link key={p.id} to={`/loja/${p.slug}`} className="shrink-0 w-32 rounded-lg bg-[#2968c8] border border-cyan-500/20 overflow-hidden hover:border-cyan-400">
             <div className="w-full h-24 bg-cyan-500/10" style={p.banner_url ? { backgroundImage: `url(${p.banner_url})`, backgroundSize: "cover", backgroundPosition: "center" } : {}} />
             <div className="p-2 flex items-center gap-2">
               <div className="h-8 w-8 rounded-full bg-[#2968c8] overflow-hidden shrink-0">

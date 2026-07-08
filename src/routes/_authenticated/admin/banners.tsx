@@ -1,5 +1,4 @@
 // @ts-nocheck
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Plus, Trash2, Upload, Image as ImageIcon, Save } from "lucide-react";

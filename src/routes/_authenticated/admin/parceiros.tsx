@@ -1,6 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, useCallback } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { adminListPartners, adminSetPartnerStatus, adminSetPartnerBadges } from "@/lib/partners.functions";
 import { CheckCircle2, XCircle, PauseCircle, RefreshCw, Store, BadgeCheck, Truck } from "lucide-react";
 import { StoreBadges } from "@/components/StoreBadges";
